@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">EngDictionary</string>
+    <string name="button_skip">Пропустить</string>
+    <string name="button_continue">Продолжить</string>
+    <string name="title_correct">Правильно!</string>
+    <string name="title_wrong">Неправильно!</string>
+    <string name="button_complete">Конец!</string>
+    <string name="title_finish_score">Ваш результат:\n %d из %d</string>
+</resources>
