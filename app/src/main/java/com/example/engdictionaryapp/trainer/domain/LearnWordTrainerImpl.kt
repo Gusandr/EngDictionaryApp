@@ -2,7 +2,6 @@ package com.example.engdictionaryapp.trainer.domain
 
 import com.example.engdictionaryapp.models.Question
 import com.example.engdictionaryapp.models.Word
-import com.example.engdictionaryapp.trainer.data.DictionaryJSON
 import com.example.engdictionaryapp.trainer.data.WordProvider
 
 const val NUMBER_OF_ANSWERS = 4

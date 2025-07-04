@@ -7,7 +7,6 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.engdictionaryapp.databinding.ActivityLearnWordBinding
-import com.example.engdictionaryapp.init.InitializeQuestionButtons
 import com.example.engdictionaryapp.trainer.domain.LearnWordTrainer
 import java.util.Locale
 
@@ -16,7 +15,7 @@ const val MIN_VALID_WIDTH_FOR_TV_SCORE = 20
 const val MIN_VALUE_TO_CHANGE_COLOR = 120
 
 class QuestionIndicator(
-    private val activity: Context,
+    private val context: Context,
     private val binding: ActivityLearnWordBinding,
     private val learnWordTrainer: LearnWordTrainer
 ) {
@@ -39,16 +38,16 @@ class QuestionIndicator(
             tvScore.layoutParams.width =
                 ViewUtils.dpToPx(
                     onePercentForTvScore.toInt().coerceAtLeast(MIN_VALID_WIDTH_FOR_TV_SCORE),
-                    activity
+                    context
                 )
             tvScore.requestLayout()
 
             tvResultCount.setTextColor(
                 ContextCompat.getColor(
-                    activity,
+                    context,
                     if (tvScore.layoutParams.width >= ViewUtils.dpToPx(
                             MIN_VALUE_TO_CHANGE_COLOR,
-                            activity
+                            context
                         )
                     )
                         R.color.white
@@ -57,7 +56,7 @@ class QuestionIndicator(
                 )
             )
 
-            val variants = InitializeQuestionButtons.getVariants(binding)
+            val variants = VariantViewHelper.getVariants(binding)
 
             variants.forEachIndexed { index, element ->
                 with(element) {
@@ -65,7 +64,7 @@ class QuestionIndicator(
 
                     layoutAnswer.setOnClickListener {
                         AnswerIndicator(
-                            activity,
+                            context,
                             this,
                             binding
                         ).markAnswer(
@@ -87,20 +86,20 @@ class QuestionIndicator(
             btnSkip.isVisible = true
             layoutVariantsAnswer.isVisible = false
             btnSkip.text =
-                activity.resources.getString(R.string.button_complete)
+                context.resources.getString(R.string.button_complete)
             tvResultCount.setTextColor(
                 ContextCompat.getColor(
-                    activity, R.color.white
+                    context, R.color.white
                 )
             )
             tvScore.layoutParams.width =
                 ViewUtils.dpToPx(
                     MAX_VALID_WIDTH_FOR_TV_SCORE,
-                    activity
+                    context
                 )
             tvScore.requestLayout()
 
-            val format = activity.resources.getString(R.string.title_finish_score)
+            val format = context.resources.getString(R.string.title_finish_score)
             val formattedString = String.format(
                 Locale.getDefault(),
                 format,
@@ -109,7 +108,7 @@ class QuestionIndicator(
             )
             tvFinish.text = formattedString
             tvFinish.isVisible = true
-            Glide.with(activity)
+            Glide.with(context)
                 .load(R.drawable.giphy) // GIF
                 .apply(RequestOptions.fitCenterTransform())
                 .into(ivFinish)
