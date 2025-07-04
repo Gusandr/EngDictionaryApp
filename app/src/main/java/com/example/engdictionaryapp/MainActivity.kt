@@ -3,11 +3,8 @@ package com.example.engdictionaryapp
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.engdictionaryapp.databinding.ActivityLearnWordBinding
-import com.example.engdictionaryapp.init.InitializeQuestionButtons
-import com.example.engdictionaryapp.trainer.data.DictionaryJSON
+import com.example.engdictionaryapp.init.InitializeQuestions
 import com.example.engdictionaryapp.trainer.domain.LearnWordTrainer
-import com.example.engdictionaryapp.trainer.domain.LearnWordTrainerImpl
-import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -26,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         privateBinding = ActivityLearnWordBinding.inflate(layoutInflater)
 
-        InitializeQuestionButtons(
+        InitializeQuestions(
             this@MainActivity,
             binding,
             learnWordTrainer

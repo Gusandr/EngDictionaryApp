@@ -10,7 +10,7 @@ import com.example.engdictionaryapp.ui.AnswerIndicator
 import com.example.engdictionaryapp.ui.QuestionIndicator
 import com.example.engdictionaryapp.ui.VariantViewHelper
 
-class InitializeQuestionButtons(
+class InitializeQuestions(
     private val activity: Activity,
     private val binding: ActivityLearnWordBinding,
     private val learnWordTrainer: LearnWordTrainer
@@ -29,7 +29,6 @@ class InitializeQuestionButtons(
 
 
     fun initialize() {
-        VariantViewHelper.getVariants(binding)
         initializeButtons()
         questionIndicator.showNextQuestion()
     }

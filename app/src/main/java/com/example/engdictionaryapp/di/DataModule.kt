@@ -18,13 +18,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DataModule {
 
-
-    @Provides
-    @Singleton
-    fun provideLearnWordTrainer(@ApplicationContext context: Context): LearnWordTrainer {
-        return LearnWordTrainerImpl(provideWords(context))
-    }
-
     @Provides
     @Singleton
     fun provideWords(@ApplicationContext context: Context): WordsProvider {
