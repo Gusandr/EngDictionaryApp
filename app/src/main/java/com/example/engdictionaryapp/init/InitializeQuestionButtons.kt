@@ -59,7 +59,7 @@ class InitializeQuestionButtons(
                     )
                 activity.setContentView(bindingClose.root)
 
-                bindingClose.btnContinueMain?.setOnClickListener {
+                bindingClose.btnContinueMain.setOnClickListener {
                     learnWordTrainer.zeroing()
                     tvQueryWord.isVisible = true
                     layoutVariantsAnswer.isVisible = true

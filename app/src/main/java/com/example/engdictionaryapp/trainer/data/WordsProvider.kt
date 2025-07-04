@@ -2,6 +2,6 @@ package com.example.engdictionaryapp.trainer.data
 
 import com.example.engdictionaryapp.models.Word
 
-interface WordProvider {
+interface WordsProvider {
     fun getWords(): List<Word>
 }

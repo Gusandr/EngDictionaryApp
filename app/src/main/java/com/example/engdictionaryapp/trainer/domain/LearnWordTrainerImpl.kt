@@ -2,7 +2,7 @@ package com.example.engdictionaryapp.trainer.domain
 
 import com.example.engdictionaryapp.models.Question
 import com.example.engdictionaryapp.models.Word
-import com.example.engdictionaryapp.trainer.data.WordProvider
+import com.example.engdictionaryapp.trainer.data.WordsProvider
 
 const val NUMBER_OF_ANSWERS = 4
 
@@ -15,7 +15,7 @@ interface LearnWordTrainer {
     fun getResult(): Int
 }
 
-class LearnWordTrainerImpl(private val wordProvider: WordProvider) : LearnWordTrainer {
+class LearnWordTrainerImpl(private val wordProvider: WordsProvider) : LearnWordTrainer {
     private val dictionary: List<Word>
         get() = wordProvider.getWords()
     private var currentQuestion: Question = Question(arrayOf(), Word("null", "null"))

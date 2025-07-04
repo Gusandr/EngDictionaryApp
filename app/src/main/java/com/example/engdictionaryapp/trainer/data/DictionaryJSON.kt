@@ -5,7 +5,7 @@ import com.example.engdictionaryapp.models.Word
 import java.io.InputStream
 import java.io.InputStreamReader
 
-class DictionaryJSON(inputStream: InputStream) : WordProvider {
+class DictionaryJSON(inputStream: InputStream) : WordsProvider {
     private var words = listOf<Word>()
 
     init {
