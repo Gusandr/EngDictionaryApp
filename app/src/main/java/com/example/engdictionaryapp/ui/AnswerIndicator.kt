@@ -1,16 +1,22 @@
 package com.example.engdictionaryapp.ui
 
+import android.content.Context
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.engdictionaryapp.MainActivity
 import com.example.engdictionaryapp.R
+import com.example.engdictionaryapp.databinding.ActivityLearnWordBinding
 import com.example.engdictionaryapp.models.Variant
 
-class AnswerIndicator(private val activity: MainActivity, private val variant: Variant) {
+class AnswerIndicator(
+    private val context: Context,
+    private val variant: Variant,
+    private val binding: ActivityLearnWordBinding
+) {
     fun markAnswer(isCorrect: Boolean?) {
         with(variant) {
             layoutAnswer.background = ContextCompat.getDrawable(
-                activity,
+                context,
                 when (isCorrect) {
                     true -> R.drawable.shape_rounded_containers_correct
                     false -> R.drawable.shape_rounded_containers_wrong
@@ -20,7 +26,7 @@ class AnswerIndicator(private val activity: MainActivity, private val variant: V
 
             tvVariantNumber.apply {
                 background = ContextCompat.getDrawable(
-                    activity,
+                    context,
                     when (isCorrect) {
                         true -> R.drawable.shape_rounded_variants_correct
                         false -> R.drawable.shape_rounded_variants_wrong
@@ -29,7 +35,7 @@ class AnswerIndicator(private val activity: MainActivity, private val variant: V
                 )
                 setTextColor(
                     ContextCompat.getColor(
-                        activity,
+                        context,
                         when (isCorrect) {
                             null -> R.color.textVariantsColor
                             else -> R.color.white
@@ -40,7 +46,7 @@ class AnswerIndicator(private val activity: MainActivity, private val variant: V
 
             tvVariantValue.setTextColor(
                 ContextCompat.getColor(
-                    activity,
+                    context,
                     when (isCorrect) {
                         true -> R.color.correctAnswerColor
                         false -> R.color.wrongAnswerColor
@@ -54,7 +60,7 @@ class AnswerIndicator(private val activity: MainActivity, private val variant: V
     }
 
     private fun showResultMenu(isCorrect: Boolean) {
-        with(activity) {
+        with(context) {
             val color: Int
             val message: String
             val resultIconRes: Int

@@ -1,102 +1,127 @@
 package com.example.engdictionaryapp.ui
 
+import android.content.Context
 import androidx.core.content.ContextCompat
 import com.example.engdictionaryapp.*
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.engdictionaryapp.MainActivity
-import com.example.engdictionaryapp.trainer.LearnWordTrainer
+import com.example.engdictionaryapp.databinding.ActivityLearnWordBinding
+import com.example.engdictionaryapp.init.InitializeQuestionButtons
+import com.example.engdictionaryapp.trainer.domain.LearnWordTrainer
 import java.util.Locale
 
-class QuestionIndicator(private val activity: MainActivity) {
-    fun showNextQuestion() {
-        with(activity) {
-            val result = LearnWordTrainer.result
-            val maxValidWidthForTvScore = 219
-            val minValidWidthForTvScore = 20
-            val minValueToChangeColor = 120
-            val ratioOfResul =
-                (LearnWordTrainer.getDictionarySize() - LearnWordTrainer.getDictionarySizeNotLearned()).toDouble() / LearnWordTrainer.getDictionarySize()
-            val onePercentForTvScore = maxValidWidthForTvScore.toDouble() * ratioOfResul
-            val firstQuestion = LearnWordTrainer.nextQuestion()
+const val MAX_VALID_WIDTH_FOR_TV_SCORE = 219
+const val MIN_VALID_WIDTH_FOR_TV_SCORE = 20
+const val MIN_VALUE_TO_CHANGE_COLOR = 120
 
-            with(binding) {
-                if (firstQuestion == null) {
-                    tvQueryWord.isVisible = false
-                    btnSkip.isVisible = true
-                    layoutVariantsAnswer.isVisible = false
-                    btnSkip.text =
-                        resources.getString(R.string.button_complete)
-                    tvResultCount.setTextColor(
-                        ContextCompat.getColor(
-                            activity, R.color.white
-                        )
-                    )
-                    tvScore.layoutParams.width =
-                        ViewUtils.dpToPx(
-                            maxValidWidthForTvScore,
+class QuestionIndicator(
+    private val activity: Context,
+    private val binding: ActivityLearnWordBinding,
+    private val learnWordTrainer: LearnWordTrainer
+) {
+    fun showNextQuestion() {
+        val result = learnWordTrainer.getResult()
+        val ratioOfResul = countingRatioOfResul()
+        val onePercentForTvScore = countingOnePercentForTvScore(ratioOfResul)
+        val firstQuestion = learnWordTrainer.nextQuestion()
+
+        with(binding) {
+            if (firstQuestion == null) {
+                displayGameResult(result)
+                return
+            }
+
+            btnSkip.isVisible = true
+            tvQueryWord.isVisible = true
+            tvQueryWord.text = firstQuestion.correctAnswer.original
+            tvResultCount.text = result.toString()
+            tvScore.layoutParams.width =
+                ViewUtils.dpToPx(
+                    onePercentForTvScore.toInt().coerceAtLeast(MIN_VALID_WIDTH_FOR_TV_SCORE),
+                    activity
+                )
+            tvScore.requestLayout()
+
+            tvResultCount.setTextColor(
+                ContextCompat.getColor(
+                    activity,
+                    if (tvScore.layoutParams.width >= ViewUtils.dpToPx(
+                            MIN_VALUE_TO_CHANGE_COLOR,
                             activity
                         )
-                    tvScore.requestLayout()
-
-                    val format = resources.getString(R.string.title_finish_score)
-                    val formattedString = String.format(Locale.getDefault(), format, result, LearnWordTrainer.getDictionarySize())
-                    tvFinish.text = formattedString
-                    tvFinish.isVisible = true
-                    Glide.with(activity)
-                        .load(R.drawable.giphy) // Replace with your GIF resource ID
-                        .apply(RequestOptions.fitCenterTransform())
-                        .into(ivFinish)
-                    ivFinish.isVisible = true
-                    return
-                }
-
-                btnSkip.isVisible = true
-                tvQueryWord.isVisible = true
-                tvQueryWord.text = firstQuestion.correctAnswer.original
-                tvResultCount.text = result.toString()
-                tvScore.layoutParams.width =
-                    ViewUtils.dpToPx(
-                        onePercentForTvScore.toInt().coerceAtLeast(minValidWidthForTvScore),
-                        activity
                     )
-                tvScore.requestLayout()
+                        R.color.white
+                    else
+                        R.color.black
+                )
+            )
 
-                tvResultCount.setTextColor(
-                    ContextCompat.getColor(
-                        activity,
-                        if (tvScore.layoutParams.width >= ViewUtils.dpToPx(
-                                minValueToChangeColor,
-                                activity
+            val variants = InitializeQuestionButtons.getVariants(binding)
+
+            variants.forEachIndexed { index, element ->
+                with(element) {
+                    tvVariantValue.text = firstQuestion.variants[index].translate
+
+                    layoutAnswer.setOnClickListener {
+                        AnswerIndicator(
+                            activity,
+                            this,
+                            binding
+                        ).markAnswer(
+                            learnWordTrainer.checkAnswer(
+                                index
                             )
                         )
-                            R.color.white
-                        else
-                            R.color.black
-                    )
-                )
-
-
-                variants.forEachIndexed { index, element ->
-                    with(element) {
-                        tvVariantValue.text = firstQuestion.variants[index].translate
-
-                        layoutAnswer.setOnClickListener {
-                            AnswerIndicator(
-                                activity,
-                                this
-                            ).markAnswer(
-                                LearnWordTrainer.checkAnswer(
-                                    index
-                                )
-                            )
-                            variants.forEach { it.layoutAnswer.setOnClickListener {} }
-                        }
-
+                        variants.forEach { it.layoutAnswer.setOnClickListener {} }
                     }
+
                 }
             }
         }
+    }
+
+    private fun displayGameResult(result: Int) {
+        with(binding) {
+            tvQueryWord.isVisible = false
+            btnSkip.isVisible = true
+            layoutVariantsAnswer.isVisible = false
+            btnSkip.text =
+                activity.resources.getString(R.string.button_complete)
+            tvResultCount.setTextColor(
+                ContextCompat.getColor(
+                    activity, R.color.white
+                )
+            )
+            tvScore.layoutParams.width =
+                ViewUtils.dpToPx(
+                    MAX_VALID_WIDTH_FOR_TV_SCORE,
+                    activity
+                )
+            tvScore.requestLayout()
+
+            val format = activity.resources.getString(R.string.title_finish_score)
+            val formattedString = String.format(
+                Locale.getDefault(),
+                format,
+                result,
+                learnWordTrainer.getDictionarySize()
+            )
+            tvFinish.text = formattedString
+            tvFinish.isVisible = true
+            Glide.with(activity)
+                .load(R.drawable.giphy) // GIF
+                .apply(RequestOptions.fitCenterTransform())
+                .into(ivFinish)
+            ivFinish.isVisible = true
+        }
+    }
+
+    private fun countingRatioOfResul(): Double {
+        return (learnWordTrainer.getDictionarySize() - learnWordTrainer.getDictionarySizeNotLearned()).toDouble() / learnWordTrainer.getDictionarySize()
+    }
+
+    private fun countingOnePercentForTvScore(ratioOfResul: Double): Double {
+        return MAX_VALID_WIDTH_FOR_TV_SCORE.toDouble() * ratioOfResul
     }
 }

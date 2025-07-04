@@ -1,18 +1,28 @@
-package com.example.engdictionaryapp.trainer
+package com.example.engdictionaryapp.trainer.domain
 
 import com.example.engdictionaryapp.models.Question
 import com.example.engdictionaryapp.models.Word
-import com.example.engdictionaryapp.trainer.data.Dictionary
+import com.example.engdictionaryapp.trainer.data.DictionaryJSON
+import com.example.engdictionaryapp.trainer.data.WordProvider
 
 const val NUMBER_OF_ANSWERS = 4
 
-object LearnWordTrainer {
-    private val dictionary: List<Word>
-        get() = Dictionary.words
-    private var currentQuestion: Question = Question(arrayOf(), Word("null", "null"))
-    var result = 0
+interface LearnWordTrainer {
+    fun nextQuestion(): Question?
+    fun checkAnswer(answerId: Int): Boolean
+    fun zeroing()
+    fun getDictionarySizeNotLearned(): Int
+    fun getDictionarySize(): Int
+    fun getResult(): Int
+}
 
-    fun nextQuestion(): Question? {
+class LearnWordTrainerImpl(private val wordProvider: WordProvider) : LearnWordTrainer {
+    private val dictionary: List<Word>
+        get() = wordProvider.getWords()
+    private var currentQuestion: Question = Question(arrayOf(), Word("null", "null"))
+    private var result = 0
+
+    override fun nextQuestion(): Question? {
         val validDictionary =
             dictionary.filterNot { it.learned }.shuffled()
 
@@ -40,7 +50,7 @@ object LearnWordTrainer {
         return currentQuestion
     }
 
-    fun checkAnswer(answerId: Int): Boolean {
+    override fun checkAnswer(answerId: Int): Boolean {
         if (answerId !in currentQuestion.variants.indices)
             throw IndexOutOfBoundsException(
                 "answerId ($answerId) goes outside the currentQuestion.variants.indices " +
@@ -53,11 +63,12 @@ object LearnWordTrainer {
         return isCorrectAnswer
     }
 
-    fun zeroing() {
+    override fun zeroing() {
         result = 0
         dictionary.map { it.learned = false }
     }
 
-    fun getDictionarySizeNotLearned() = dictionary.filterNot { it.learned }.size
-    fun getDictionarySize() = dictionary.size
+    override fun getDictionarySizeNotLearned() = dictionary.filterNot { it.learned }.size
+    override fun getDictionarySize() = dictionary.size
+    override fun getResult(): Int = result
 }

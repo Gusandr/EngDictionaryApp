@@ -5,12 +5,11 @@ import com.example.engdictionaryapp.models.Word
 import java.io.InputStream
 import java.io.InputStreamReader
 
-object Dictionary {
-    var words = listOf<Word>()
+class DictionaryJSON(inputStream: InputStream) : WordProvider {
+    private var words = listOf<Word>()
 
-    fun fillWords(inputStream: InputStream) {
+    init {
         val reader = JsonReader(InputStreamReader(inputStream, "UTF-8"))
-
         reader.use {
             words = readWordArray(it)
         }
@@ -41,6 +40,10 @@ object Dictionary {
         }
         reader.endObject()
         return Word(wordOriginal, wordTranslate)
+    }
+
+    override fun getWords(): List<Word> {
+        return words
     }
 
 }

@@ -6,4 +6,8 @@
     <string name="title_correct">Correct!</string>
     <string name="title_wrong">Wrong!</string>
     <string name="title_finish_score">Your result:\n %d of %d</string>
+    <string name="don_t_panic">DON`T PANIC!</string>
+    <string name="development_by_gusandr">Development by Gusandr</string>
+    <string name="close_image_button">close image button</string>
+    <string name="correct_answer_icon">correct answer icon</string>
 </resources>
