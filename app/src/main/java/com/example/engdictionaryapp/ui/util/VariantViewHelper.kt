@@ -1,4 +1,4 @@
-package com.example.engdictionaryapp.ui
+package com.example.engdictionaryapp.ui.util
 
 import com.example.engdictionaryapp.databinding.ActivityLearnWordBinding
 import com.example.engdictionaryapp.models.Variant

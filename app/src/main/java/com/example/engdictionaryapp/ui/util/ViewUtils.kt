@@ -1,4 +1,4 @@
-package com.example.engdictionaryapp.ui
+package com.example.engdictionaryapp.ui.util
 
 import android.content.Context
 import android.util.TypedValue

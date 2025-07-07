@@ -99,6 +99,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btnSkip"
             app:layout_constraintTop_toBottomOf="@+id/ibClose" />
 
         <LinearLayout
@@ -187,6 +188,21 @@
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/btnFinish"
+            android:layout_width="311dp"
+            android:layout_height="58dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/blue"
+            android:textAllCaps="true"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/ivFinish"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+             />
 
         <Button
             android:id="@+id/btnSkip"
