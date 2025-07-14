@@ -1,61 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="#F5F3F7">
+    android:background="#F5F3F7"
+    android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="500dp"
-        tools:context=".MainActivity">
-
-    <LinearLayout
+    <androidx.compose.ui.platform.ComposeView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:id="@+id/composeView"
+        />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nunito_bold"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/don_t_panic"
-            android:textColor="#24DF68"
-            android:textSize="20sp"
-            android:layout_marginBottom="16dp"/>
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nunito_bold"
-            android:text="@string/development_by_gusandr"
-            android:textAllCaps="true"
-            android:layout_marginBottom="32dp"/>
-    </LinearLayout>
 
-    <Button
-        android:id="@+id/btnContinueMain"
-        android:layout_width="155.5dp"
-        android:layout_height="58dp"
-        android:backgroundTint="@color/wrongAnswerColor"
-        android:fontFamily="@font/nunito_bold"
-        android:text="@string/button_continue"
-        android:textSize="17sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="50dp"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+</FrameLayout>

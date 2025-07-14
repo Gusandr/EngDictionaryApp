@@ -30,20 +30,15 @@ class QuestionIndicatorImpl @Inject constructor(
         private const val MIN_VALUE_TO_CHANGE_COLOR = 120
     }
 
-    override fun showNextQuestion() {
-        val result = learnWordTrainer.getResult()
-        val ratioOfResult = countingRatioOfResult()
-        val onePercentForTvScore = countingOnePercentForTvScore(ratioOfResult)
-        val firstQuestion = learnWordTrainer.nextQuestion()
-
+    override fun showNextQuestion(state: MainState) {
         with(binding) {
-            if (firstQuestion == null) {
-                displayGameResult(result)
+            if (state.firstQuestion == null) {
+                displayGameResult(state.result)
                 return
             }
 
-            updateUI(firstQuestion, result, onePercentForTvScore)
-            setupVariants(firstQuestion)
+            updateUI(state.firstQuestion, state.result, state.onePercentForTvScore)
+            setupVariants(state.firstQuestion)
         }
     }
 
@@ -137,13 +132,5 @@ class QuestionIndicatorImpl @Inject constructor(
                 .into(ivFinish)
             ivFinish.isVisible = true
         }
-    }
-
-    private fun countingRatioOfResult(): Double {
-        return (learnWordTrainer.getDictionarySize() - learnWordTrainer.getDictionarySizeNotLearned()).toDouble() / learnWordTrainer.getDictionarySize()
-    }
-
-    private fun countingOnePercentForTvScore(ratioOfResul: Double): Double {
-        return MAX_VALID_WIDTH_FOR_TV_SCORE.toDouble() * ratioOfResul
     }
 }
